@@ -2,25 +2,24 @@
 """Mastermind Game"""
 import random
 
-X = (1, 2, 3, 4, 5, 6)
-
 def create_key():
     """ Creates key """
-    key = (random.choice(X), random.choice(X),
-	        random.choice(X), random.choice(X))
+    available = (1, 2, 3, 4, 5, 6)
+    key = (random.choice(available), random.choice(available),
+	        random.choice(available), random.choice(available))
     return key
 	
-def check_sequence(key, sequence_after_conversion):
+def check_sequence(key, seq_after_conv):
     """ Check if key is correct """
     in_key = 0
-    in_key_in_position = 0
+    in_key_in_pos = 0
 
-    for one_of_key, one_of_seq in zip(key, sequence_after_conversion):
+    for one_of_key, one_of_seq in zip(key, seq_after_conv):
         if (one_of_key == one_of_seq):
-            in_key_in_position += 1
+            in_key_in_pos += 1
         elif (one_of_seq in key):
             in_key += 1
-    return in_key, in_key_in_position		
+    return in_key, in_key_in_pos		
 	
 def input_sequence():
     """ Converse user input to list """
@@ -42,25 +41,29 @@ def input_sequence():
         else:
             print "Sekwencja ma niepoprawną długość, spróbuj ponownie: "
     return sequence
-				
-KEY = create_key()
-LIMIT = 0
-IN_KEY = 0
-IN_KEY_IN_POSITION = 0
 
-print "\nWitaj w grze Mastermind!"
-while (IN_KEY_IN_POSITION != 4 ):
-    print "Wprowadź sekwencję czterech cyfr [1-6]: "
-    if (LIMIT <= 10):
-        SEQUENCE_AFTER_CONVERSION = input_sequence()
-        IN_KEY, IN_KEY_IN_POSITION = check_sequence(KEY,
-                                            		SEQUENCE_AFTER_CONVERSION)
-        if (IN_KEY_IN_POSITION == 4):
-            print "Odgadłeś całą sekwencję, gratulacje !!!"
+def main():
+    """ Main function """
+    key = create_key()
+    limit = 0
+    in_key = 0
+    in_key_in_pos = 0
+
+    print "\nWitaj w grze Mastermind!"
+    while (in_key_in_pos != 4 ):
+        print "Wprowadź sekwencję czterech cyfr [1-6]: "
+        if (limit <= 10):
+            seq_after_conv = input_sequence()
+            in_key, in_key_in_pos = check_sequence(key, seq_after_conv)
+            if (in_key_in_pos == 4):
+                print "Odgadłeś całą sekwencję, gratulacje !!!"
+            else:
+                print "Liczba cyfr na właściwych miejscach = ", in_key_in_pos
+                print "Liczba cyfr które znajdują się w kluczu = ", in_key
         else:
-            print "Liczba cyfr na właściwych miejscach = ", IN_KEY_IN_POSITION
-            print "Liczba cyfr które znajdują się w kluczu = ", IN_KEY
-    else:
-        print "Niestety nie udało Ci się odgadnąć klucza :( ", KEY
-        break
-    LIMIT += 1
+            print "Niestety nie udało Ci się odgadnąć klucza :( ", key
+            break
+        limit += 1
+
+if __name__ == "__main__":
+    main()
